@@ -6,18 +6,30 @@ const html = fs.readFileSync('./index.html','utf-8')
 const server = http.createServer((req,res)=> {
     let path = req.url;
     if(path === '/' || path.toLocaleLowerCase() ==='/home'){
-        res.end(html)
+        res.writeHead(200,{
+            'Content-Type' : 'text/html'
+        })
+        res.end(html.replace('{{%CONTENT%}}', 'You are in home page'))
     } else  if(path.toLocaleLowerCase() ==='/about'){
-        res.end('your in about page')
+        res.writeHead(200,{
+            'Content-Type' : 'text/html'
+        })
+        res.end(html.replace('{{%CONTENT%}}', 'You are in About page'))
     }else  if(path.toLocaleLowerCase() ==='/contact'){
-        res.end('your in contact page')
+        res.writeHead(200,{
+            'Content-Type' : 'text/html'
+        })
+        res.end(html.replace('{{%CONTENT%}}', 'You are in Contact page'))
     } else {
-        res.end('Error 404: PAge not found')
+        res.writeHead(404,{
+            'Content-Type' : 'text/html'
+        })
+        res.end(html.replace('{{%CONTENT%}}', 'Error 404: Page not found'))
     }
 
     
 })
 
 server.listen('8000','127.0.0.1',()=>{
-    console.log('listening')
+    console.log('listening....')
 })
