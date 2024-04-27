@@ -3,6 +3,18 @@ const readline = require('readline');
 const http = require('http')
 const html = fs.readFileSync('./index.html','utf-8')
 let products = JSON.parse(fs.readFileSync('./products.json','utf-8'))
+let productlist = fs.readFileSync('./productlist.html',('utf-8'))
+
+let productListArray = products.map((prod)=> {
+    let output = productlist
+        .replace('{{%NAME%}}',prod.name)
+        .replace('{{%USERNAME%}}',prod.username)
+        .replace('{{%EMAIL%}}',prod.emails)
+        .replace('{{%PASSWORD%}}',prod.password)
+        .replace('{{%PHONE%}}',prod.phoneNumber)
+
+    return output;
+})
 
 const server = http.createServer((req,res)=> {
     let path = req.url;
@@ -10,7 +22,7 @@ const server = http.createServer((req,res)=> {
         res.writeHead(200,{
             'Content-Type' : 'text/html'
         })
-        res.end(html.replace('{{%CONTENT%}}', 'You are in home page'))
+        res.end(html.replace('{{%CONTENT%}}', productlist))
     } else  if(path.toLocaleLowerCase() ==='/about'){
         res.writeHead(200,{
             'Content-Type' : 'text/html'
@@ -26,7 +38,7 @@ const server = http.createServer((req,res)=> {
             'Content-Type': 'application/json'
         })
         res.end('you are in product page')
-        console.log(products)
+        console.log(productListArray.join(','))
 
     } else {
         res.writeHead(404,{

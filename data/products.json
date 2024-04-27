@@ -1,55 +1,18 @@
-[{
-  "result": [
+[
     {
-      "name": {
-        "first": "Kay",
-        "middle": "River",
-        "last": "Hermann"
-      },
-      "username": "Kay-Hermann",
-      "password": "pe1Vl4Jl8eonpF8",
-      "emails": [
-        "Hilbert_Kohler68@example.com",
-        "Gardner.Runolfsdottir1@gmail.com"
-      ],
-      "phoneNumber": "936.441.1279 x1083",
-      "location": {
-        "street": "2061 Hermina Parkway",
-        "city": "Louieport",
-        "state": "Colorado",
-        "country": "Greece",
-        "zip": "09402-1015",
-        "coordinates": {
-          "latitude": -58.9533,
-          "longitude": 143.6827
-        }
-      }
+      "id": 1,
+      "name": "kay River",
+       "username": "Kay-Hermann",
+       "password": "pe1Vl4Jl8eonpF8",
+       "emails":"Hilbert_Kohler68@example.com",
+       "phoneNumber": "936.441.1279 x1083"
     },
     {
-      "name": {
-        "first": "Jaylin",
-        "middle": "Ryan",
-        "last": "Homenick"
-      },
-      "username": "Jaylin-Homenick",
-      "password": "1S7YJEL6owmHDmM",
-      "emails": [
-        "Ernest.Trantow@gmail.com",
-        "Jammie4@example.com"
-      ],
-      "phoneNumber": "(394) 836-1273",
-      "location": {
-        "street": "3736 Jazmyn Valley",
-        "city": "Port Mayrastad",
-        "state": "Illinois",
-        "country": "Paraguay",
-        "zip": "51234-4764",
-        "coordinates": {
-          "latitude": -87.6717,
-          "longitude": 97.5079
-        }
-      }
-    }
+      "id": 2,
+      "name": "Ayor bami",
+       "username": "devX cant",
+       "password": "wvcjNI8eonpF8",
+       "emails":"devxcant@example.com",
+       "phoneNumber": "234.4443.74r9 x1083"
+    } 
   ]
-}
-]
