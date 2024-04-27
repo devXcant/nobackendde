@@ -1,29 +1,18 @@
 const fs = require ('fs');
 const readline = require('readline');
 const http = require('http')
-
 const html = fs.readFileSync('./index.html','utf-8')
-let products = JSON.parse(fs.readFileSync('./products.json','utf-8'))
-let productlist = fs.readFileSync('./productlist.html',('utf-8'))
-
-let productListArray = products.map((prod)=> {
-    let output = productlist
-        .replace('{{%NAME%}}',prod.name)
-        .replace('{{%USERNAME%}}',prod.username)
-        .replace('{{%EMAIL%}}',prod.emails)
-        .replace('{{%PASSWORD%}}',prod.password)
-        .replace('{{%PHONE%}}',prod.phoneNumber)
-
-    return output;
-})
+const url = require('url')
 
 const server = http.createServer((req,res)=> {
-    let path = req.url;
+    let {query, pathname:path} = url.parse(request.url,true)
+    console.log(x)
+    // let path = req.url;
     if(path === '/' || path.toLocaleLowerCase() ==='/home'){
         res.writeHead(200,{
             'Content-Type' : 'text/html'
         })
-        res.end(html.replace('{{%CONTENT%}}', productlist))
+        res.end(html.replace('{{%CONTENT%}}', 'You are in home page'))
     } else  if(path.toLocaleLowerCase() ==='/about'){
         res.writeHead(200,{
             'Content-Type' : 'text/html'
@@ -34,16 +23,6 @@ const server = http.createServer((req,res)=> {
             'Content-Type' : 'text/html'
         })
         res.end(html.replace('{{%CONTENT%}}', 'You are in Contact page'))
-
-    }else if(path.toLocaleLowerCase()==='/products'){
-        fs.writefile(html,'{{%CONTENT%}}')
-        let productresponseHtml = html.replace('{{%CONTENT%}}', productListArray.join(','))
-        res.writeHead(200,{
-            'Content-Type': 'text/html'
-        })
-        res.end(productresponseHtml)
-        // console.log(productListArray.join(','))
-
     } else {
         res.writeHead(404,{
             'Content-Type' : 'text/html'
