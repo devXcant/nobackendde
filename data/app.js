@@ -33,12 +33,15 @@ const server = http.createServer((req,res)=> {
             'Content-Type' : 'text/html'
         })
         res.end(html.replace('{{%CONTENT%}}', 'You are in Contact page'))
+
     }else if(path.toLocaleLowerCase()==='/products'){
+        fs.writefile(html,'{{%CONTENT%}}')
+        let productresponseHtml = html.replace('{{%CONTENT%}}', productListArray.join(','))
         res.writeHead(200,{
-            'Content-Type': 'application/json'
+            'Content-Type': 'text/html'
         })
-        res.end('you are in product page')
-        console.log(productListArray.join(','))
+        res.end(productresponseHtml)
+        // console.log(productListArray.join(','))
 
     } else {
         res.writeHead(404,{
