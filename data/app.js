@@ -1,59 +1,61 @@
-const fs = require ('fs');
-const readline = require('readline');
-const http = require('http')
+const fs = require('fs');
+const http = require('http');
+const url = require('url');
 
-const html = fs.readFileSync('./index.html','utf-8')
-let products = JSON.parse(fs.readFileSync('./products.json','utf-8'))
-let productlist = fs.readFileSync('./productlist.html',('utf-8'))
+const html = fs.readFileSync('./index.html', 'utf-8');
+const products = JSON.parse(fs.readFileSync('./products.json', 'utf-8'));
+const productlist = fs.readFileSync('./productlist.html', 'utf-8');
 
-let productListArray = products.map((prod)=> {
-    let output = productlist
-        .replace('{{%NAME%}}',prod.name)
-        .replace('{{%USERNAME%}}',prod.username)
-        .replace('{{%EMAIL%}}',prod.emails)
-        .replace('{{%PASSWORD%}}',prod.password)
-        .replace('{{%PHONE%}}',prod.phoneNumber)
+function replaceHtml(template, product) {
+    let output = template
+        .replace('{{%NAME%}}', product.name)
+        .replace('{{%USERNAME%}}', product.username)
+        .replace('{{%EMAIL%}}', product.emails)
+        .replace('{{%PASSWORD%}}', product.password)
+        .replace('{{%PHONE%}}', product.phoneNumber);
 
     return output;
-})
+}
 
-const server = http.createServer((req,res)=> {
-    let path = req.url;
-    if(path === '/' || path.toLocaleLowerCase() ==='/home'){
-        res.writeHead(200,{
-            'Content-Type' : 'text/html'
-        })
-        res.end(html.replace('{{%CONTENT%}}', productlist))
-    } else  if(path.toLocaleLowerCase() ==='/about'){
-        res.writeHead(200,{
-            'Content-Type' : 'text/html'
-        })
-        res.end(html.replace('{{%CONTENT%}}', 'You are in About page'))
-    }else  if(path.toLocaleLowerCase() ==='/contact'){
-        res.writeHead(200,{
-            'Content-Type' : 'text/html'
-        })
-        res.end(html.replace('{{%CONTENT%}}', 'You are in Contact page'))
+const server = http.createServer((req, res) => {
+    const { query, pathname: path } = url.parse(req.url, true);
 
-    }else if(path.toLocaleLowerCase()==='/products'){
-        fs.writefile(html,'{{%CONTENT%}}')
-        let productresponseHtml = html.replace('{{%CONTENT%}}', productListArray.join(','))
-        res.writeHead(200,{
+    if (path === '/' || path.toLowerCase() === '/home') {
+        res.writeHead(200, {
             'Content-Type': 'text/html'
-        })
-        res.end(productresponseHtml)
-        // console.log(productListArray.join(','))
-
+        });
+        res.end(html.replace('{{%CONTENT%}}', productlist));
+    } else if (path.toLowerCase() === '/about') {
+        res.writeHead(200, {
+            'Content-Type': 'text/html'
+        });
+        res.end(html.replace('{{%CONTENT%}}', 'You are in About page'));
+    } else if (path.toLowerCase() === '/contact') {
+        res.writeHead(200, {
+            'Content-Type': 'text/html'
+        });
+        res.end(html.replace('{{%CONTENT%}}', 'You are in Contact page'));
+    } else if (path.toLowerCase() === '/products') {
+        if (!query.id) {
+            let productListArray = products.map((prod) => {
+                return replaceHtml(productlist, prod);
+            });
+            let productresponseHtml = html.replace('{{%CONTENT%}}', productListArray.join(','));
+            res.writeHead(200, {
+                'Content-Type': 'text/html'
+            });
+            res.end(productresponseHtml);
+        } else {
+            res.end('This is a product with ID = ' + query.id);
+        }
     } else {
-        res.writeHead(404,{
-            'Content-Type' : 'text/html'
-        })
-        res.end(html.replace('{{%CONTENT%}}', 'Error 404: Page not found'))
+        res.writeHead(404, {
+            'Content-Type': 'text/html'
+        });
+        res.end(html.replace('{{%CONTENT%}}', 'Error 404: Page not found'));
     }
+});
 
-    
-})
-
-server.listen('8000','127.0.0.1',()=>{
-    console.log('listening....')
-})
+server.listen(8000, '127.0.0.1', () => {
+    console.log('listening....');
+});
