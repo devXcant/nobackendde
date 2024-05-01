@@ -1,0 +1,14 @@
+{
+  "name": "express-with-node",
+  "version": "1.0.0",
+  "description": "express backend",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "devXcant",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
