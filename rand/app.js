@@ -10,6 +10,10 @@ const server = http.createServer((req, res)=> {
 
 console.log('Program has started')
 
+setTimeout(()=> {
+        console.log('Timeout completed')
+    })
+
 fs.readFile('./upload.txt', ()=> {
     console.log('file read complete')
 })
@@ -22,6 +26,46 @@ console.log('Program has Executed')
 
 
 ///2nd check
+
+console.log('Program has started')
+
+fs.readFile('./upload.txt', ()=> {
+    console.log('file read complete')
+
+    setTimeout(()=> {
+        console.log('Timeout completed')
+    })
+
+    setImmediate(()=> {
+    console.log('Set immediate callback executed')
+    })
+
+})
+
+
+console.log('Program has Executed')
+
+///3rd check
+
+console.log('Program has started')
+
+fs.readFile('./upload.txt', ()=> {
+    console.log('file read complete')
+
+    setTimeout(()=> {
+        console.log('Timeout completed')
+    })
+
+    setImmediate(()=> {
+    console.log('Set immediate callback executed')
+    })
+
+    process.nextTick(()=> console.log('process.nexttick executed'))
+
+})
+
+
+console.log('Program has Executed')
 
 
 // server.listen('8000','127.0.0.1',()=>{
