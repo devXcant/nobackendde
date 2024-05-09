@@ -8,7 +8,10 @@ const moviesRouter = require('./Routes/moviesRoutes')
 
 // Middleware
 app.use(express.json());
-app.use(morgan('dev'));
+
+if(process.env.NODE_ENV === 'development'){
+    app.use(morgan('dev'));
+} 
 
 // Custom logger middleware
 const logger = function(req, res, next) {

@@ -8,13 +8,15 @@ const moviesController = require('./../Controllers/moviesController')
 // const moviesRouter = express.Router()
 const router = express.Router()
 
+router.param('id', moviesController.checkId)
+
 // new Routes
 // moviesRouter.route('/')
 //     .get(getAllMovies)
 //     .post(postMovies)
 router.route('/')
     .get(moviesController.getAllMovies)
-    .post(moviesController.postMovies)
+    .post(moviesController.validateBody,moviesController.postMovies)
 
 // moviesRouter.route('/:id')
 //     .get(getMoviesById)    

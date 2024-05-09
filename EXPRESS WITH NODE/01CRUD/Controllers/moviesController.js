@@ -3,6 +3,28 @@ const fs = require('fs');
 // Load movies data from JSON file
 let movies = JSON.parse(fs.readFileSync('./data/movies.json'));
 
+exports.checkId = (req, res, next, value) => {
+    console.log('movie id is' + value);
+    let movie = movies.find(el => el.id === value * 1);
+    if (!movie) {
+        return res.status(404).json({
+            status: 'error',
+            message: 'Movie with ID ' + value + ' not found'
+        });
+    }
+    next()
+}
+
+
+exports.validateBody = (req,res,next) => {
+    if(!req.body.name || req.body.releaseYear){
+        return res.status(400).json({
+            status: 'fail',
+            message: 'Not a valid movie data'
+        })
+    }
+    next(); 
+}
 
 // Route handler functions
 exports.getAllMovies = (req, res) => {
@@ -18,12 +40,12 @@ exports.getAllMovies = (req, res) => {
 exports.getMoviesById = (req, res) => {
     const id = req.params.id * 1;
     let movie = movies.find(el => el.id === id);
-    if (!movie) {
-        return res.status(404).json({
-            status: 'error',
-            message: 'Movie with ID ' + id + ' not found'
-        });
-    }
+    // if (!movie) {
+    //     return res.status(404).json({
+    //         status: 'error',
+    //         message: 'Movie with ID ' + id + ' not found'
+    //     });
+    // }
     res.status(200).json({
         status: 'success',
         data: {
@@ -37,12 +59,12 @@ exports.postMovies = (req, res) => {
     const newMovie = { id: newId, ...req.body };
     movies.push(newMovie);
     fs.writeFile('./data/movies.json', JSON.stringify(movies), (err) => {
-        if (err) {
-            return res.status(500).json({
-                status: 'error',
-                message: 'Internal server error'
-            });
-        }
+        // if (err) {
+        //     return res.status(500).json({
+        //         status: 'error',
+        //         message: 'Internal server error'
+        //     });
+        // }
         res.status(201).json({
             status: 'success',
             data: {
@@ -55,12 +77,12 @@ exports.postMovies = (req, res) => {
 exports.patchMovies = (req, res) => {
     const id = req.params.id * 1;
     let movieToUpdate = movies.find(el => el.id === id);
-    if (!movieToUpdate) {
-        return res.status(404).json({
-            status: 'error',
-            message: 'Movie with ID ' + id + ' not found'
-        });
-    }
+    // if (!movieToUpdate) {
+    //     return res.status(404).json({
+    //         status: 'error',
+    //         message: 'Movie with ID ' + id + ' not found'
+    //     });
+    // }
     Object.assign(movieToUpdate, req.body);
     fs.writeFile('./data/movies.json', JSON.stringify(movies), (err) => {
         if (err) {
@@ -81,12 +103,7 @@ exports.patchMovies = (req, res) => {
 exports.deleteMovies = (req, res) => {
     const id = req.params.id * 1;
     const index = movies.findIndex(el => el.id === id);
-    if (index === -1) {
-        return res.status(404).json({
-            status: 'error',
-            message: 'Movie with ID ' + id + ' not found'
-        });
-    }
+    // i 
     movies.splice(index, 1);
     fs.writeFile('./data/movies.json', JSON.stringify(movies), (err) => {
         if (err) {
